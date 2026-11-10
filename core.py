@@ -103,18 +103,35 @@ def supabase_credentials(secrets=None):
     return url.rstrip('/'), key
 
 
+
 def db_request(method, path, secrets=None, payload=None, params=None, extra_headers=None):
     url, key = supabase_credentials(secrets)
     if not (url and key):
         raise RuntimeError('Supabase not configured')
-    headers = {'apikey':key, 'Authorization':f'Bearer {key}', 'Content-Type':'application/json'}
+
+    headers = {
+        'apikey': key,
+        'Authorization': f'Bearer {key}',
+        'Content-Type': 'application/json'
+    }
     headers.update(extra_headers or {})
-    r = requests.request(method, f'{url}/rest/v1/{path}', headers=headers, json=payload, params=params, timeout=30)
-    if not r.ok:
-    raise RuntimeError(
-        f"Supabase returned HTTP {r.status_code}: {r.text[:500]}"
+
+    r = requests.request(
+        method,
+        f'{url}/rest/v1/{path}',
+        headers=headers,
+        json=payload,
+        params=params,
+        timeout=30
     )
+
+    if not r.ok:
+        raise RuntimeError(
+            f"Supabase returned HTTP {r.status_code}: {r.text[:500]}"
+        )
+
     return r.json() if r.content else []
+
 
 
 def save_jobs(jobs, secrets=None):
