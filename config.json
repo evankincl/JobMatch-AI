@@ -1,0 +1,10 @@
+{
+  "roles": ["Operations Manager", "Director of Operations", "Strategy & Operations", "Business Transformation"],
+  "min_salary_usd": 130000,
+  "company_boards": {
+    "greenhouse": ["stripe", "airbnb", "figma", "notion", "databricks"],
+    "lever": ["netflix", "spotify"]
+  },
+  "max_jobs_per_feed": 250,
+  "ai_match_threshold": 65
+}
