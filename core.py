@@ -110,7 +110,10 @@ def db_request(method, path, secrets=None, payload=None, params=None, extra_head
     headers = {'apikey':key, 'Authorization':f'Bearer {key}', 'Content-Type':'application/json'}
     headers.update(extra_headers or {})
     r = requests.request(method, f'{url}/rest/v1/{path}', headers=headers, json=payload, params=params, timeout=30)
-    r.raise_for_status()
+    if not r.ok:
+    raise RuntimeError(
+        f"Supabase returned HTTP {r.status_code}: {r.text[:500]}"
+    )
     return r.json() if r.content else []
 
 
